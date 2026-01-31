@@ -1,7 +1,8 @@
 package dev.supergooey.mongoose.models
 
-data class Item(
+data class Manga(
     val id: String,
     val title: String,
-    val description: String
+    val coverResourceId: Int,
+    val chapters: List<Chapter>
 )

@@ -3,7 +3,11 @@ package dev.supergooey.mongoose.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object HomeRoute
+data object ShelfRoute
 
 @Serializable
-data class DetailRoute(val id: String)
+data class ReaderRoute(
+    val mangaId: String,
+    val chapterId: String,
+    val startPage: Int = 0
+)
