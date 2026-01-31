@@ -52,6 +52,7 @@ fun MongooseTheme(
     MaterialTheme(
       colorScheme = colorScheme,
       typography = Typography,
+      shapes = MongooseShapes,
       content = content
     )
 }

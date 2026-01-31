@@ -45,3 +45,7 @@ This is a single-module Jetpack Compose Android application using Material 3.
 - Single Activity architecture with Compose (`MainActivity.kt`)
 - Edge-to-edge layout enabled
 - Centralized dependency versions in `gradle/libs.versions.toml`
+
+## Guidelines
+
+- After removing dependencies, run `./gradlew assembleDebug` to verify the build still succeeds
