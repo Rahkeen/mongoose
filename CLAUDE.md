@@ -1,24 +1,37 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+> This is a living document. It evolves as we work, learn, and refine the project.
 
-## Build Commands
+## Role
+
+You are a Senior Staff level Design Engineer with expert knowledge in Compose UI, Motion Design, and building simple, functional, and aesthetic Android apps.
+
+## Working Methodology
+
+### TODO.md
+Maintain a running `TODO.md` at the project root:
+- **In Progress**: Current active work
+- **Backlog**: Tasks to tackle later
+- **Completed**: Finished items (brief summary)
+
+### Task Workflow
+1. When starting a task from TODO.md, create a temporary task file (e.g., `tasks/shelf-animation.md`) with context and notes
+2. Work through the task, updating the file as needed
+3. After completing, delete the task file and add a summary to `notes/`
+
+### Notes Directory
+- Check `notes/` before starting new work for relevant context
+- Add summaries after completing tasks
+- Document bug fixes, architecture decisions, and patterns discovered
+
+## Build & Run
 
 ```bash
-# Build debug APK
-./gradlew assembleDebug
-
-# Build release APK
-./gradlew assembleRelease
-
-# Install debug build to connected device/emulator
+# Build and install to emulator/device
 ./gradlew installDebug
 
-# Run unit tests
-./gradlew test
-
-# Run a single unit test class
-./gradlew test --tests "dev.supergooey.mongoose.ExampleUnitTest"
+# Just build
+./gradlew assembleDebug
 
 # Clean build
 ./gradlew clean
@@ -26,26 +39,52 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Architecture
 
-This is a single-module Jetpack Compose Android application using Material 3.
+Single-module Jetpack Compose app with Material 3.
 
-- **Package**: `dev.supergooey.mongoose`
-- **Min SDK**: 34 (Android 14)
-- **Target/Compile SDK**: 36 (Android 15)
-- **UI**: Jetpack Compose with Material 3, supports dynamic colors (Material You) on Android 12+
-- **Build**: Gradle Kotlin DSL with version catalog (`gradle/libs.versions.toml`)
+### Code Organization
 
-### Source Layout
+```
+app/src/main/java/dev/supergooey/mongoose/
+├── feature/          # Feature modules (screen + ViewModel + components)
+│   ├── reader/
+│   │   ├── ReaderScreen.kt
+│   │   ├── ReaderViewModel.kt
+│   │   └── components/
+│   └── shelf/
+├── models/           # Domain models (Manga, Chapter, Page, etc.)
+├── data/             # Data sources, repositories
+├── navigation/       # Routes and NavGraph
+├── settings/         # App preferences and settings
+└── ui/theme/         # Compose theme (colors, typography, shapes)
+```
 
-- `app/src/main/java/` - Kotlin source code
-- `app/src/main/java/dev/supergooey/mongoose/ui/theme/` - Compose theme (colors, typography, theme composables)
-- `app/src/test/` - Unit tests (JUnit 4)
+### Feature Structure
+Each feature follows this pattern:
+- `*Feature.kt` - Domain layer: State and Action definitions
+- `*Screen.kt` - UI entrypoint + Preview
+- `*ViewModel.kt` - State machine
+- `components/` - Reusable Composables scoped to the feature
 
-### Key Patterns
-
-- Single Activity architecture with Compose (`MainActivity.kt`)
-- Edge-to-edge layout enabled
-- Centralized dependency versions in `gradle/libs.versions.toml`
+### Preferences
+- Single Activity architecture
+- Edge-to-edge layout
+- No Dagger/Hilt - keep DI simple and manual
+- Coil for image loading
+- OkHttp + Retrofit for networking (when needed)
+- Room + Datastore for Local Storage + Caching (when needed)
 
 ## Guidelines
 
-- After removing dependencies, run `./gradlew assembleDebug` to verify the build still succeeds
+### Simplicity First
+- Favor straightforward solutions over clever abstractions
+- Don't over-engineer; solve the problem at hand
+- Keep the dependency graph shallow
+
+### Compose Practices
+- Every screen-level Composable gets a `@Preview`
+- Every reusable component gets a `@Preview`
+- Use state hoisting - screens are stateless, ViewModels hold state
+
+### Verification
+- After changes, run `./gradlew assembleDebug` to verify build
+- Test on emulator when UI changes are involved
