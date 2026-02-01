@@ -17,12 +17,13 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
-import dev.supergooey.mongoose.App
+import dev.supergooey.mongoose.MongooseApplication
 import dev.supergooey.mongoose.feature.reader.components.PageImage
 import dev.supergooey.mongoose.feature.reader.components.ReaderOverlay
 import dev.supergooey.mongoose.settings.ReadingDirection
@@ -38,7 +39,7 @@ fun ReaderRoute(
             mangaId = mangaId,
             chapterId = chapterId,
             startPage = startPage,
-            readerSettings = (LocalView.current.context.applicationContext as App).readerSettings
+            readerSettings = (LocalContext.current.applicationContext as MongooseApplication).readerSettings
         )
     )
 ) {
